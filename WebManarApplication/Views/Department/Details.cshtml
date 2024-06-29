@@ -1,0 +1,22 @@
+﻿@model Deaprtment
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+<div class="form-group">
+    <label class="col-form-label" asp-for="Name">Name</label>
+    <input class="form-control" asp-for="Name" readonly />
+    <span asp-validation-for="Name"></span>
+</div>
+
+<div class="form-group">
+    <label class="col-form-label" asp-for="Code">Code</label>
+    <input class="form-control" asp-for="Code" readonly />
+    <span asp-validation-for="Code"></span>
+</div>
+<div class="form-group">
+    <label class="col-form-label" asp-for="DateOfcreation">DateOfcreation</label>
+    <input class="form-control" asp-for="DateOfcreation" readonly />
+    <span asp-validation-for="DateOfcreation"></span>
+</div>

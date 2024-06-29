@@ -1,0 +1,12 @@
+﻿@model EmployeeViewModel
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<form asp-action="Edit">
+    <div asp-validation-summary="All"></div>
+    <partial name="partialView/_CreateEditPartialView" />
+    <input type="submit" value="submit" class="btn btn-primary" /> || <a asp-action="Index">go to back</a>
+</form>
