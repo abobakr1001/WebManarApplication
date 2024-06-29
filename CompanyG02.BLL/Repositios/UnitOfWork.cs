@@ -26,6 +26,7 @@ namespace CompanyG02.BLL.Repositios
             return Dbcontext.SaveChanges();
         }
 
+
         public void Dispose()
            => Dbcontext.Dispose();
         
