@@ -18,30 +18,28 @@ namespace CompanyG02.BLL.Repositios
         {
             this.dbcontext = dbcontext;
         }
-        public void Add(T item)
-        {
-            dbcontext.Set<T>().Add(item);
-         
-        }
-
+        public async Task Add(T item)
+      
+          =>  await  dbcontext.Set<T>().AddAsync(item);
+     
         public void Delete(T item)
-        {
-            dbcontext.Set<T>().Remove(item);
+       
+          =>  dbcontext.Set<T>().Remove(item);
            
-        }
+       
 
-        public T Get(int id)
+        public async Task<T> Get(int id)
         {
-            return dbcontext.Set<T>().Find(id);
+            return await dbcontext.Set<T>().FindAsync(id);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
             if (typeof(T) == typeof(Employee))
             {
-                return (IEnumerable<T>) dbcontext.employees.Include(e => e.Department).ToList();
+                return (IEnumerable<T>) await dbcontext.employees.Include(e => e.Department).ToListAsync();
             }
-            return dbcontext.Set<T>().ToList();
+            return await dbcontext.Set<T>().ToListAsync();
         }
 
         public void Update(T item)

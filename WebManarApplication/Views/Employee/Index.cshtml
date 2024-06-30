@@ -29,6 +29,7 @@
                 <th>@Html.DisplayNameFor(d=>d.Department)</th>
                 <th>@Html.DisplayNameFor(d=>d.Email)</th>
                 <th>@Html.DisplayNameFor(d=>d.PhoneNumber)</th>
+                <th>@Html.DisplayNameFor(d=>d.Image)</th>
                  <th>@Html.DisplayNameFor(d=>d.HireDate)</th>
                 <th>@Html.DisplayNameFor(d=>d.IsActive)</th>
                 
@@ -48,6 +49,9 @@
                     <td> @Html.DisplayFor(d=>department.Department.Name)</td>
                     <td>@Html.DisplayFor(d=>department.Email)</td>
                     <td>@department.PhoneNumber</td>
+                    <td>
+                        <img src="~/files/Images/@department.ImageName" class="img-fluid rounded "  />
+                    </td>
                     <td>@department.HireDate</td>
                      
                     <td>

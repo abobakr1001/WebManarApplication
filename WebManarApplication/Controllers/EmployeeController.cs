@@ -5,6 +5,8 @@ using CompanyG02.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebManarApplication.Helpers;
 using WebManarApplication.Models;
 
 namespace WebManarApplication.Controllers
@@ -26,11 +28,11 @@ namespace WebManarApplication.Controllers
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
         }
-        public IActionResult Index( string searchName)
+        public async Task<IActionResult>  Index( string searchName)
         {
             IEnumerable<Employee> employees;
             if (string.IsNullOrEmpty(searchName))
-             employees = unitOfWork.EmployeeRepository.GetAll();
+             employees = await unitOfWork.EmployeeRepository.GetAll();
             else
                 employees = unitOfWork.EmployeeRepository.GetEmployeesByName(searchName);
            
@@ -45,13 +47,18 @@ namespace WebManarApplication.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(EmployeeViewModel employeeVM)
+        public async Task<IActionResult>  Create(EmployeeViewModel employeeVM)
         {
             if (ModelState.IsValid)
             {
                 var Mappedemp = mapper.Map<EmployeeViewModel, Employee>(employeeVM);
-                unitOfWork.EmployeeRepository.Add(Mappedemp);
-                int result = unitOfWork.Complelete();
+                if (employeeVM.ImageName is not null)
+                {
+                  Mappedemp.ImageName = DocumentSettings.UploadImage(employeeVM.Image, "Images");
+                }
+
+                await unitOfWork.EmployeeRepository.Add(Mappedemp);
+                int result = await unitOfWork.Complelete();
                 if (result > 0)
                 {
                     TempData["Message"] = "employee is Craeted";
@@ -60,13 +67,13 @@ namespace WebManarApplication.Controllers
             }
             return View(employeeVM);
         }
-        public IActionResult Details(int? id, string viewname = "Details")
+        public async Task<IActionResult>  Details(int? id, string viewname = "Details")
         {
             if (id is null)
             {
                 BadRequest();
             }
-            var employee = unitOfWork.EmployeeRepository.Get(id.Value);
+            var employee = await unitOfWork.EmployeeRepository.Get(id.Value);
             if (employee is null)
                 return NotFound();
             var Mappedemp = mapper.Map<Employee,EmployeeViewModel>(employee);
@@ -74,10 +81,10 @@ namespace WebManarApplication.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int? id)
+        public async Task<IActionResult>  Edit(int? id)
         {
             ViewBag.Departments = unitOfWork.DepartmentRepository.GetAll();
-            return Details(id, "edit");
+            return await Details(id, "edit");
             //if (id is null)
             //{
             //    BadRequest();
@@ -89,7 +96,7 @@ namespace WebManarApplication.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute] int? id, EmployeeViewModel employee )
+        public async Task<IActionResult>  Edit([FromRoute] int? id, EmployeeViewModel employee )
         {
             if (id != employee.Id)
                 return BadRequest();
@@ -99,7 +106,7 @@ namespace WebManarApplication.Controllers
                 {
                     var Mappedemp = mapper.Map<EmployeeViewModel, Employee>(employee);
                     unitOfWork.EmployeeRepository.Update(Mappedemp);
-                    unitOfWork.Complelete();
+                   await unitOfWork.Complelete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -114,9 +121,9 @@ namespace WebManarApplication.Controllers
 
 
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult>  Delete(int? id)
         {
-            return Details(id,  "Delete");
+            return await Details(id,  "Delete");
             //if (id is null)
             //{
             //    BadRequest();
@@ -128,7 +135,7 @@ namespace WebManarApplication.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute] int? id, EmployeeViewModel employeeVM)
+        public async Task<IActionResult>  Delete([FromRoute] int? id, EmployeeViewModel employeeVM)
         {
             if (id != employeeVM.Id)
                 return BadRequest();
@@ -136,9 +143,15 @@ namespace WebManarApplication.Controllers
             {
                 try
                 {
+                    
                     var Mappedemp = mapper.Map<EmployeeViewModel, Employee>(employeeVM);
+
+                    if (employeeVM.ImageName is not null)
+                    {
+                        DocumentSettings.DeleteFile(Mappedemp.ImageName, "Images");
+                    }
                     unitOfWork.EmployeeRepository.Delete(Mappedemp);
-                    unitOfWork.Complelete();
+                   await  unitOfWork.Complelete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)

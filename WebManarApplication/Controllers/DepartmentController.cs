@@ -2,7 +2,9 @@
 using CompanyG02.BLL.Repositios;
 using CompanyG02.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp;
 using System;
+using System.Threading.Tasks;
 
 namespace WebManarApplication.Controllers
 {
@@ -18,9 +20,9 @@ namespace WebManarApplication.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var department = unitOfWork.DepartmentRepository.GetAll();
+            var department = await unitOfWork.DepartmentRepository.GetAll();
             return View(department);
         }
         [HttpGet]
@@ -30,12 +32,12 @@ namespace WebManarApplication.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create( Deaprtment deaprtment)
+        public async Task<IActionResult>  Create( Deaprtment deaprtment)
         {
             if (ModelState.IsValid)
             {
-                            unitOfWork.DepartmentRepository.Add(deaprtment);
-                var resut = unitOfWork.Complelete();
+                          await  unitOfWork.DepartmentRepository.Add(deaprtment);
+                var resut = await unitOfWork.Complelete();
                 if (resut > 0)
                 {
                     TempData["Message"] = "created department";
@@ -44,22 +46,22 @@ namespace WebManarApplication.Controllers
             }
             return View(deaprtment);
         }
-        public IActionResult Details(int? id,string viewname = "Details")
+        public async Task<IActionResult> Details(int? id,string viewname = "Details")
         {
             if (id is null)
             {
                 BadRequest();
             }
-            var department = unitOfWork.DepartmentRepository.Get(id.Value);
+            var department = await unitOfWork.DepartmentRepository.Get(id.Value);
             if (department is null)
                 return NotFound();
             return View(viewname, department);
         }
 
         [HttpGet]
-        public IActionResult Edit (int? id)
+        public async Task<IActionResult> Edit (int? id)
         {
-            return Details(id, "edit");
+            return await Details(id, "edit");
             //if (id is null)
             //{
             //    BadRequest();
@@ -71,7 +73,7 @@ namespace WebManarApplication.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([FromRoute]int? id,Deaprtment deaprtment)
+        public async Task<IActionResult> Edit([FromRoute]int? id,Deaprtment deaprtment)
         {
             if (id != deaprtment.Id)
                 return BadRequest();
@@ -80,7 +82,7 @@ namespace WebManarApplication.Controllers
                 try
                 {
                     unitOfWork.DepartmentRepository.Update(deaprtment);
-                    unitOfWork.Complelete();
+                    await unitOfWork.Complelete();
                     return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
@@ -93,20 +95,20 @@ namespace WebManarApplication.Controllers
             return View(deaprtment);
         }
         [HttpGet]
-        public IActionResult Delete(int? id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return Details(id, "Delete");
+            return await Details(id, "Delete");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete([FromRoute]int? id,Deaprtment deaprtment)
+        public async Task<IActionResult> Delete([FromRoute]int? id,Deaprtment deaprtment)
         {
             if (id != deaprtment.Id)
                 return BadRequest();
             try
             {
                 unitOfWork.DepartmentRepository.Delete(deaprtment);
-                unitOfWork.Complelete();
+                await unitOfWork.Complelete();
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)

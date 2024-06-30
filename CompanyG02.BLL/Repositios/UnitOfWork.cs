@@ -21,9 +21,9 @@ namespace CompanyG02.BLL.Repositios
             Dbcontext = dbcontext;
         }
 
-        public int Complelete()
+        public async Task<int>  Complelete()
         {
-            return Dbcontext.SaveChanges();
+            return await Dbcontext.SaveChangesAsync();
         }
 
 

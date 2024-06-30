@@ -9,9 +9,9 @@ namespace CompanyG02.BLL.Interfaces
 {
     public interface IGenericReposotory<T>
     {
-        IEnumerable<T> GetAll();
-        T Get(int id);
-        void Add(T item);
+        Task<IEnumerable<T>> GetAll();
+       Task< T> Get(int id);
+        Task Add(T item);
         void Update(T item);
         void Delete(T item);
     }

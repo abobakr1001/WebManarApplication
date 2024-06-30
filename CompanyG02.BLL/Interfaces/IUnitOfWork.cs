@@ -10,6 +10,6 @@ namespace CompanyG02.BLL.Interfaces
     {
         IEmployeeRepository EmployeeRepository { get; set; }
         IdepartmentRepository DepartmentRepository { get; set; }
-        int Complelete();
+       Task<int>  Complelete();
     }
 }

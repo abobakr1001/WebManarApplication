@@ -27,6 +27,7 @@ namespace CompanyG02.DAL.Models
  
         public string PhoneNumber { get; set; }
         public DateTime HireDate { get; set; }
+        public string ImageName { get; set; }
         public DateTime CreateDate { get; set; } = DateTime.Now;
         [ForeignKey("Department")]
         public int? DepartmentId { get; set; }
