@@ -4,14 +4,16 @@ using CompanyG02.DAL.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CompanyG02.DAL.Migrations
 {
     [DbContext(typeof(companyDbcontext))]
-    partial class companyDbcontextModelSnapshot : ModelSnapshot
+    [Migration("20240630183627_sucrityroles")]
+    partial class sucrityroles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

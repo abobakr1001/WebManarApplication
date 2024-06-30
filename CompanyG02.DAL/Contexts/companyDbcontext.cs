@@ -1,4 +1,5 @@
 ﻿using CompanyG02.DAL.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CompanyG02.DAL.Contexts
 {
-    public class companyDbcontext:DbContext
+    public class companyDbcontext:IdentityDbContext
     {
 
         public companyDbcontext(DbContextOptions<companyDbcontext> options) : base(options)
