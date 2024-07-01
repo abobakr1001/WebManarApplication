@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CompanyG02.DAL.Contexts
 {
-    public class companyDbcontext:IdentityDbContext
+    public class companyDbcontext:IdentityDbContext<ApplicationUser>
     {
 
         public companyDbcontext(DbContextOptions<companyDbcontext> options) : base(options)

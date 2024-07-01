@@ -1,6 +1,7 @@
 ﻿using CompanyG02.BLL.Interfaces;
 using CompanyG02.BLL.Repositios;
 using CompanyG02.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp;
 using System;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace WebManarApplication.Controllers
 {
+    [Authorize]
     public class DepartmentController : Controller
     {
         //private IdepartmentRepository departmentRepository;

@@ -2,6 +2,7 @@
 using CompanyG02.BLL.Interfaces;
 using CompanyG02.BLL.Repositios;
 using CompanyG02.DAL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using WebManarApplication.Models;
 namespace WebManarApplication.Controllers
 {
 
-  
+    [Authorize]
     public class EmployeeController : Controller
     {
 

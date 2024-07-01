@@ -1,9 +1,12 @@
 ﻿using CompanyG02.BLL.Interfaces;
 using CompanyG02.BLL.Repositios;
 using CompanyG02.DAL.Contexts;
+using CompanyG02.DAL.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,6 +42,22 @@ namespace WebManarApplication
 
             //services.AddScoped<IEmployeeRepository,  EmployeeRepository>();// كل مره اعمل كونترول اضبفه هنا 
             services.AddAutoMapper(m=>m.AddProfile(new EmployeeProfile()));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(option =>
+            {  option.Password.RequireNonAlphanumeric = true;
+                option.Password.RequireDigit = true;
+                option.Password.RequireUppercase = true;
+               
+                
+            }).AddEntityFrameworkStores<companyDbcontext>()
+            .AddDefaultTokenProviders(); 
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).
+                AddCookie(option =>
+                {
+                    option.LoginPath = "Account/Ligin";
+                    option.AccessDeniedPath = "Home/Error";
+                });
             
         }
 
@@ -59,6 +78,7 @@ namespace WebManarApplication
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
